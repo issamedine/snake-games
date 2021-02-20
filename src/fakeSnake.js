@@ -14,83 +14,56 @@ const getRandomCoordinates = () => {
 
 const App = () => {
   const [food, setFood] = useState(getRandomCoordinates);
-  const [speed, setSpeed] = useState(200);
+  const [speed, setSpeed] = useState(300);
   const [direction, setDirection] = useState("RIGHT");
   const [snakeDots, setSnakeDots] = useState([
     [0, 0],
     [2, 0],
   ]);
-  const [pause, setPause] = useState(true);
 
   useEffect(() => {
-    if (pause) return;
     checkIfOutOfBorders();
     checkIfCollapsed();
-    setTimeout(() => moveSnake(snakeDots, checkIfEat()), speed);
-  }, [snakeDots, pause]);
+    checkIfEat();
+    setTimeout(() => moveSnake(snakeDots), 300);
+    // setInterval(moveSnake, speed);
+    // return () => clearInterval();
+  }, [snakeDots]);
 
   useEffect(() => {
     // document.onkeydown = onKeyDown;
-    const onKeyDown = (e) => {
+    document.addEventListener("keydown", onKeyDown);
+  }, []);
+
+  const onKeyDown = useCallback(
+    (e) => {
       e = e || window.event;
       switch (e.keyCode) {
         case 38:
-          console.log("direction", direction);
-          !["DOWN", "UP"].includes(direction) && setDirection("UP");
+          setDirection("UP");
           break;
         case 40:
-          !["DOWN", "UP"].includes(direction) && setDirection("DOWN");
+          setDirection("DOWN");
           break;
         case 37:
-          !["LEFT", "RIGHT"].includes(direction) && setDirection("LEFT");
+          setDirection("LEFT");
           break;
         case 39:
-          !["LEFT", "RIGHT"].includes(direction) && setDirection("RIGHT");
+          setDirection("RIGHT");
           break;
 
         default:
           break;
       }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      console.log("direction return", direction); // useEffect precedente
-    };
-  }, [direction, setDirection]);
-
-  // const onKeyDown = useCallback(
-  //   (e) => {
-  //     e = e || window.event;
-  //     switch (e.keyCode) {
-  //       case 38:
-  //         console.log('direction', direction)
-  //       !["DOWN", "UP"].includes(direction) && setDirection("UP");
-  //         break;
-  //       case 40:
-  //         setDirection("DOWN");
-  //         break;
-  //       case 37:
-  //         setDirection("LEFT");
-  //         break;
-  //       case 39:
-  //         setDirection("RIGHT");
-  //         break;
-
-  //       default:
-  //         break;
-  //     }
-  //   },
-  //   [setDirection, direction]
-  // );
+    },
+    [setDirection]
+  );
   const moveSnake = useCallback(
-    (snakeDots, eaten) => {
+    (snakeDots) => {
       let dots = [...snakeDots];
       let head = dots[dots.length - 1];
       // [0, 0],
-      // [2, 0], head
+      // [2, 0],
 
       switch (direction) {
         case "RIGHT":
@@ -111,9 +84,8 @@ const App = () => {
       }
       if (direction) {
         dots.push(head);
-
-        eaten ? setFood(getRandomCoordinates()) : dots.shift();
-
+        dots.shift();
+        // console.log("before timeout", dots, snakeDots);
         setSnakeDots([...dots]);
       }
     },
@@ -138,10 +110,22 @@ const App = () => {
     });
   };
 
-  const checkIfEat = () => {
+  const checkIfEat = async() => {
     let head = snakeDots[snakeDots.length - 1];
+    let myfood = food;
+    console.log('myfood', myfood, 'head', head, 'snakeDots', snakeDots)
+    if (head[0] === myfood[0] && head[1] === myfood[1]) {
+      setFood(getRandomCoordinates());
+      await enLargeSnake();
+      // onGameOver();
+    }
+  };
 
-    return head[0] === food[0] && head[1] === food[1];
+  const enLargeSnake = async() => {
+    let newSnake = [...snakeDots];
+    
+    newSnake.unshift([]);
+    setSnakeDots(newSnake);
   };
 
   const onGameOver = () => {
@@ -150,20 +134,13 @@ const App = () => {
       [2, 0],
     ]);
     setDirection(null);
-    // setFood(getRandomCoordinates());
+    setFood(getRandomCoordinates());
   };
   return (
-    <>
-      <div className="game-area">
-        <Snake snakeDots={snakeDots} />
-        <Food dot={food} />
-      </div>
-      <div className="btn">
-        <button onClick={() => setPause((p) => !p)}>
-          {pause ? "Play" : "Pause"}
-        </button>
-      </div>
-    </>
+    <div className="game-area">
+      <Snake snakeDots={snakeDots} />
+      <Food dot={food} />
+    </div>
   );
 };
 
