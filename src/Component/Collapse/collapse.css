@@ -1,0 +1,61 @@
+.item-1 {
+  width: 400px;
+  margin: 5% auto;
+  text-align: center;
+  border: 1px solid #333;
+}
+
+.dropdown {
+  position: relative;
+
+}
+
+.title {
+  border: 1px solid royalblue;
+  position: absolute;
+  width: 100%;
+  cursor: pointer;
+}
+
+.default-child {
+  border: 1px solid red;
+  top: 20px;
+  position: absolute;
+  height: 10px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.child-show {
+  display: block;
+  animation-name: showcollapse;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.child-hidden {
+    animation-name: hiddencollapse;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes showcollapse {
+  from {
+    height: 10px;
+  }
+  to {
+    height: 100px;
+    box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+  }
+}
+@keyframes hiddencollapse {
+  from {
+    height: 100px;
+    box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+  }
+  to {
+    height: 10px;
+    display: none;
+
+  }
+}
