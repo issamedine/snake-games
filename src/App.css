@@ -1,1 +1,22 @@
 
+.navbar-menu {
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid #f6f6f6;
+}
+
+.navbar-menu div {
+   margin-right: 10px ;
+}
+
+.navbar-menu div a {
+    text-decoration: none;
+    color: #333;
+}
+
+.navbar-menu div a:hover {
+    color: rgb(4, 67, 161);
+    text-decoration: underline;
+    transition: 0.5s all;
+}
+
