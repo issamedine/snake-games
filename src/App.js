@@ -27,6 +27,11 @@ const App = () => {
           path="/tictac"
           render={(props) => <TicTac {...props} />}
         />
+        <Route
+          exact
+          path="/collapse"
+          render={(props) => <Collapse {...props} />}
+        />
       </Switch>
     </Router>
   );

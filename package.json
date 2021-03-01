@@ -1,5 +1,6 @@
 {
-  "name": "gojsapp",
+  "homepage":"http://issamedine.github.io/games",
+  "name": "games",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

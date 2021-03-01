@@ -11,6 +11,9 @@ const NavbarMenu = () => {
       <div>
         <Link to="/tictac">Tic-Tac-Toe</Link>
       </div>
+      <div>
+        <Link to="/collapse">Collapse</Link>
+      </div>
     </div>
   );
 };
